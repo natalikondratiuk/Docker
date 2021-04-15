@@ -1,0 +1,8 @@
+--
+rabbitmq:
+  username: username
+  password: MTIzNDU2Nzg5MA==
+  host: 192.168.136.181
+  port: 5672
+  virtualhost: virtualhost
+  queue: queue

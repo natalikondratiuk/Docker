@@ -1,0 +1,13 @@
+FROM debian:stretch
+
+WORKDIR /Nata/Docker/my_project/sender/
+
+COPY sender.py sender.py
+RUN apt-get update > /dev/null &&  apt-get -y -q install \
+    python3-pip > /dev/null
+
+RUN pip3 install pika pyyaml
+
+COPY . .
+
+CMD ["/usr/bin/python3", "/opt/sender.py"]
