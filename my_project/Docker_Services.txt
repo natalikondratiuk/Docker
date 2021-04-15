@@ -1,0 +1,47 @@
+my_project-rabbitmq.service
+[Unit]
+Description=my first docker service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=3
+ExecStartPre=/bin/sh -c "/usr/bin/docker rm -f rabbitmq 2> /dev/null || /bin/true"
+ExecStart=/usr/bin/docker run --rm -a STDIN -a STDOUT -a STDERR -p 5672:5672 --name rabbitmq rabbitmq:1.0
+ExecStop=/usr/bin/docker stop rabbitmq
+
+[Install]
+WantedBy=multi-user.target
+
+my_project-sender.service
+[Unit]
+Description=my first docker service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=3
+ExecStartPre=/bin/sh -c "/usr/bin/docker rm -f sender 2> /dev/null || /bin/true"
+ExecStart=/usr/bin/docker run --rm -a STDIN -a STDOUT -a STDERR -v /etc/my_project/sender:/etc/my_project/sender --name sender sender:1.0
+ExecStop=/usr/bin/docker stop sender
+
+[Install]
+WantedBy=multi-user.target
+
+my_project-reciever.service
+[Unit]
+Description=my first docker service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=3
+ExecStartPre=/bin/sh -c "/usr/bin/docker rm -f receiver 2> /dev/null || /bin/true"
+ExecStart=/usr/bin/docker run --rm -a STDIN -a STDOUT -a STDERR -v /etc/my_project/receiver:/etc/my_project/receiver --name receiver receiver:1.0
+ExecStop=/usr/bin/docker stop receiver
+
+[Install]
+WantedBy=multi-user.target
